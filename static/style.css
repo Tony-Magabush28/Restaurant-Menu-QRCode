@@ -1,0 +1,159 @@
+body {
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    text-align: center;
+    background-color: #f4f4f4;
+    margin: 0;
+}
+
+header nav {
+    background-color: #333;
+    padding: 10px 0;
+}
+
+header nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+header nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 900px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.menu-section {
+    margin-bottom: 20px;
+}
+
+.menu-item {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.btn {
+    padding: 10px 25px;
+    font-size: 18px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+footer {
+    margin-top: 40px;
+    font-size: 14px;
+    color: #777;
+}
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.order-table th, .order-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+.order-table th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.order-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.order-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.btn-delete {
+    background-color: #e74c3c;
+    padding: 8px 16px;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+}
+
+.btn-serve {
+    background-color: #3498db;
+    padding: 8px 16px;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-serve:hover {
+    background-color: #2980b9;
+}
+
+.served {
+    color: green;
+    font-weight: bold;
+}
+
+.not-served {
+    color: orange;
+    font-weight: bold;
+}
+
+/* Flash messages */
+.flashes {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.flashes li {
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.flash-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.flash-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+

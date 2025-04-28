@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurant Menu - Table {{ table_number }}</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a> |
+            <a href="{{ url_for('admin') }}">Admin Panel</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Menu for Table {{ table_number }}</h1>
+
+        <form action="/table/{{ table_number }}" method="POST" class="menu-form">
+            <section class="menu-section">
+                <h2>Starters</h2>
+                <div class="menu-item">
+                    <input type="checkbox" name="items" value="Tomato Soup"> Tomato Soup - $5
+                </div>
+                <div class="menu-item">
+                    <input type="checkbox" name="items" value="Garlic Bread"> Garlic Bread - $4
+                </div>
+            </section>
+
+            <section class="menu-section">
+                <h2>Main Courses</h2>
+                <div class="menu-item">
+                    <input type="checkbox" name="items" value="Grilled Chicken"> Grilled Chicken - $12
+                </div>
+                <div class="menu-item">
+                    <input type="checkbox" name="items" value="Beef Burger"> Beef Burger - $10
+                </div>
+            </section>
+
+            <section class="menu-section">
+                <h2>Desserts</h2>
+                <div class="menu-item">
+                    <input type="checkbox" name="items" value="Cheesecake"> Cheesecake - $6
+                </div>
+                <div class="menu-item">
+                    <input type="checkbox" name="items" value="Chocolate Lava Cake"> Chocolate Lava Cake - $7
+                </div>
+            </section>
+
+            <button type="submit" class="btn">Order Now</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Our Restaurant. All rights reserved.</p>
+    </footer>
+</body>
+</html>
