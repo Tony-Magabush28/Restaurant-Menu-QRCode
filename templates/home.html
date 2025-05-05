@@ -26,6 +26,16 @@
             <a href="/table/4"><button class="btn">Table 4</button></a>
             <a href="/table/5"><button class="btn">Table 5</button></a>
         </div>
+
+        <p>Scan the QR code for any table to access the menu:</p>
+        <div class="qr-codes">
+            {% for table in range(1, 6) %}
+                <div class="qr-code">
+                    <h3>Table {{ table }}</h3>
+                    <img src="{{ url_for('serve_qrcode', table_number=table) }}" alt="QR Code for Table {{ table }}">
+                </div>
+            {% endfor %}
+        </div>
     </main>
 
     <footer>

@@ -157,3 +157,22 @@ footer {
     border: 1px solid #f5c6cb;
 }
 
+.qr-codes {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+    flex-wrap: wrap; /* Allows wrapping if screen is small */
+}
+
+.qr-code {
+    text-align: center;
+}
+
+.qr-code img {
+    width: 100px;   /* You can adjust this */
+    height: 100px;
+    object-fit: contain;
+}
+
+

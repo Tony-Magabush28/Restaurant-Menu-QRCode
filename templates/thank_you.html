@@ -19,22 +19,7 @@
         <p>Your order from <strong>Table {{ table_number }}</strong> has been received.</p>
         <p>We are preparing your meal. Enjoy!</p>
 
-        <!-- Loop through all five tables and display their QR codes -->
-        <p>Scan the QR code for any table to access the menu:</p>
-        <div class="qr-codes">
-            {% for table in range(1, 6) %}
-                <div class="qr-code">
-                    <h3>Table {{ table }}</h3>
-                    <!-- Show QR image -->
-                    <img src="{{ url_for('static', filename='qrcodes/table_' ~ table ~ '_qrcode.png') }}" alt="QR Code for Table {{ table }}">
-                    <br>
-                    <!-- Download QR button -->
-                    <a href="{{ url_for('static', filename='qrcodes/table_' ~ table ~ '_qrcode.png') }}" download>
-                        <button class="btn">Download QR</button>
-                    </a>
-                </div>
-            {% endfor %}
-        </div>
+        <!-- Removed QR code section since it's now on the Home page -->
 
         <a href="{{ url_for('home') }}"><button class="btn">Back to Home</button></a>
     </main>
