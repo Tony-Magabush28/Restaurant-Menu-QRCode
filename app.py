@@ -45,7 +45,7 @@ def generate_qr_code(table_number):
     
     # Only generate QR code if it doesn't exist
     if not os.path.exists(qr_image_path):
-        data = f'https://restaurant-menu-qrcode.onrender.com/table/{table_number}'  # URL for the table
+        data = f'https://restaurant-menu-qrcode.onrender.com/table/{table_number}'  # URL for the table https://restaurant-menu-qrcode.onrender.com
         qr = qrcode.make(data)
         qr.save(qr_image_path)
 
