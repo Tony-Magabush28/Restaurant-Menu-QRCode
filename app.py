@@ -1,12 +1,16 @@
 import os
+from dotenv import load_dotenv  # Import this for environment variable loading
 import qrcode
-from flask import Flask, render_template, request, redirect, url_for, flash, send_file
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_migrate import Migrate
 
+# Load environment variables from .env file
+load_dotenv()
+
 app = Flask(__name__)
-app.secret_key = 'secretkey123'  # Needed for flash messages
+app.secret_key = 'secretkey123'  # Needed for flash messages and session
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///orders.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -23,7 +27,7 @@ class Order(db.Model):
     __tablename__ = 'orders'
     id = db.Column(db.Integer, primary_key=True)
     table_number = db.Column(db.Integer, nullable=False)
-    items = db.Column(db.String(500))  # Added length
+    items = db.Column(db.String(500))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     served = db.Column(db.Boolean, default=False)
 
@@ -42,16 +46,13 @@ def create_order(table_number, order_items):
 # Helper function to generate QR codes for each table
 def generate_qr_code(table_number):
     qr_image_path = os.path.join(QR_CODE_FOLDER, f'table_{table_number}_qrcode.png')
-    
-    # Only generate QR code if it doesn't exist
     if not os.path.exists(qr_image_path):
-        data = f'https://restaurant-menu-qrcode.onrender.com/table/{table_number}'  # URL for the table https://restaurant-menu-qrcode.onrender.com
+        data = f'https://restaurant-menu-qrcode.onrender.com/table/{table_number}'
         qr = qrcode.make(data)
         qr.save(qr_image_path)
 
 @app.route('/')
 def home():
-    # Generate QR codes for all tables
     for table_number in range(1, 6):
         generate_qr_code(table_number)
     return render_template('home.html')
@@ -69,8 +70,36 @@ def table_menu(table_number):
 def thank_you(table_number):
     return render_template('thank_you.html', table_number=table_number)
 
+@app.route('/admin_login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        # Get the admin credentials from environment variables
+        admin_username = os.getenv('ADMIN_USERNAME')
+        admin_password = os.getenv('ADMIN_PASSWORD')
+
+        if username == admin_username and password == admin_password:
+            session['admin_logged_in'] = True
+            flash('Logged in successfully.', 'success')
+            return redirect(url_for('admin'))
+        else:
+            flash('Invalid credentials.', 'danger')
+    return render_template('admin_login.html')
+
+@app.route('/admin_logout')
+def admin_logout():
+    session.pop('admin_logged_in', None)
+    flash('Logged out successfully.', 'info')
+    return redirect(url_for('home'))
+
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
+    if not session.get('admin_logged_in'):
+        flash('Please log in to access the admin panel.', 'warning')
+        return redirect(url_for('admin_login'))
+
     if request.method == 'POST':
         search_table = request.form.get('search_table')
         orders = Order.query.filter_by(table_number=search_table).order_by(Order.timestamp.desc()).all()
@@ -80,6 +109,8 @@ def admin():
 
 @app.route('/delete_order/<int:order_id>', methods=['POST'])
 def delete_order(order_id):
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
     order_to_delete = Order.query.get_or_404(order_id)
     db.session.delete(order_to_delete)
     db.session.commit()
@@ -88,13 +119,14 @@ def delete_order(order_id):
 
 @app.route('/mark_served/<int:order_id>', methods=['POST'])
 def mark_served(order_id):
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
     order = Order.query.get_or_404(order_id)
     order.served = True
     db.session.commit()
     flash('Order marked as served!', 'success')
     return redirect(url_for('admin'))
 
-# Serve the QR code image for any table
 @app.route('/qrcode/<int:table_number>')
 def serve_qrcode(table_number):
     qr_image_path = os.path.join(QR_CODE_FOLDER, f'table_{table_number}_qrcode.png')
